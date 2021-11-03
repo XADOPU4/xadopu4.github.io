@@ -1,0 +1,5 @@
+{
+    "typeAcquistion":{
+        "include" : ["/scripts/jQuery.js"]
+    }
+}
