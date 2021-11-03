@@ -159,7 +159,8 @@ function applyFilters(checkBoxArray, cardArray) {
                 console.log(checkBox.value + "   nothing changes");
 
 
-                //Странное поведение
+                //Странное поведение, не баг, а фича
+
 
                 // $(checkBox).prop('checked', false);
                 $(checkBox).prop('disabled', true);
