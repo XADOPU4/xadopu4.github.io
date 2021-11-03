@@ -162,7 +162,7 @@ function applyFilters(checkBoxArray, cardArray) {
                 //Странное поведение, не баг, а фича
 
 
-                // $(checkBox).prop('checked', false);
+                $(checkBox).prop('checked', false);
                 $(checkBox).prop('disabled', true);
             }
             else {
