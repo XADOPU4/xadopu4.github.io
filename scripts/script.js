@@ -87,8 +87,20 @@ $("document").ready(function () {
     var cardArray = document.getElementsByClassName("card");
     var checkBoxArray = $('input[type="checkbox"]');
 
+    for (var checkBox of checkBoxArray) {
+        $(checkBox).prop('checked', false);
+        $(checkBox).prop('disabled', false);
+    }
+
     $('div[class="clear-filter"]').click(function () {
         disableUselessCheckBoxes(cardArray, checkBoxArray, propertyNames);
+        //applyFilters(checkBoxArray, cardArray);
+
+        for (var checkBox of checkBoxArray) {
+            $(checkBox).prop('checked', false);
+            $(checkBox).prop('disabled', false);
+        }
+
         applyFilters(checkBoxArray, cardArray);
 
     });
@@ -100,7 +112,6 @@ $("document").ready(function () {
     for (let checkBox of checkBoxArray) {
         $(checkBox).change(function (event) {
             applyFilters(checkBoxArray, cardArray);
-
         });
     }
 
@@ -115,16 +126,23 @@ function applyFilters(checkBoxArray, cardArray) {
     let checkedCheckBoxes = new Map();
 
     //Добавляем все параметры в мапу, то есть сезон, ширину, диаметр
-    for (const property of propertyNames) {
-        checkedCheckBoxes.set(property, []);
-    }
+    // for (const property of propertyNames) {
+    //     checkedCheckBoxes.set(property, []);
+    // }
 
     //Добавляем по каждому параметру актуальные выбранные значения
     for (const checkBox of checkBoxArray) {
         if (checkBox.checked) {
-            checkedCheckBoxes.get(checkBox.name).push(checkBox.value);
+            if (!checkedCheckBoxes.has(checkBox.name)) {
+                checkedCheckBoxes.set(checkBox.name, [checkBox.value]);
+            }
+            else {
+                checkedCheckBoxes.get(checkBox.name).push(checkBox.value);
+            }
         }
     }
+
+    console.log("Different parameters: ", checkedCheckBoxes.size);
 
     // console.log("After update : ");
 
@@ -132,53 +150,57 @@ function applyFilters(checkBoxArray, cardArray) {
     //     console.log(key, elem);
     // }
 
-    let showThis = giveMeArray(checkedCheckBoxes, cardArray);
-    console.log("Show this: ", showThis);
+    let showThis = [];
+
+    if (checkedCheckBoxes.size > 0) {
+        showThis = giveMeArray(checkedCheckBoxes, cardArray);
+        console.log("Show this: ", showThis);
+
+        for (const checkBox of checkBoxArray) {
+            if (true) {
+                var newIds = checkthisParameter(checkBox, propertyNames, checkBoxArray, cardArray);
+                console.log(`Cards to show with {${checkBox.name}, ${checkBox.value}} : `, newIds);
+
+                if (newIds.length == 0) {
+                    console.log("Nothing to show");
+                    $(checkBox).prop('disabled', true);
+                }
+                else if (compare(showThis, newIds)) {
+                    console.log("Nothing changes");
 
 
-
-    showCards(showThis, cardArray);
-
+                    //Странное поведение, не баг, а фича
 
 
-    for (const checkBox of checkBoxArray) {
-        if (true) {
-            var newIds = checkthisParameter(checkBox, propertyNames, checkBoxArray, cardArray);
+                    // $(checkBox).prop('checked', false);
+                    $(checkBox).prop('disabled', true);
+                }
+                else {
+                    console.log("Something changes");
+                    $(checkBox).prop('disabled', false);
 
-            console.log(newIds);
-
-            if (newIds.length == 0) {
-                console.log(checkBox.value + "   nothing to show");
-                $(checkBox).prop('disabled', true);
-            }
-            else if (compare(showThis, newIds)) {
-                console.log(checkBox.value + "   nothing changes");
-
-
-                //Странное поведение, не баг, а фича
-
-
-                // $(checkBox).prop('checked', false);
-                $(checkBox).prop('disabled', true);
-            }
-            else {
-                console.log(checkBox.value + "   something changes");
-                $(checkBox).prop('disabled', false);
+                }
 
             }
+
+
 
         }
+    }
+    else {
 
+        disableUselessCheckBoxes(cardArray, checkBoxArray, propertyNames);
 
-
+        for (const card of cardArray) {
+            showThis.push($(card).data('id'));
+        }
     }
 
+    showCards(showThis, cardArray);
 }
 
 
 function showCards(cardIdArray, cardArray) {
-
-
 
     for (const card of cardArray) {
 
@@ -191,8 +213,6 @@ function showCards(cardIdArray, cardArray) {
         }
 
     }
-
-
 }
 
 function checkthisParameter(checkBoxToCheck, properties, checkBoxArray, cardArray) {
@@ -201,39 +221,95 @@ function checkthisParameter(checkBoxToCheck, properties, checkBoxArray, cardArra
 
     let checkedCheckBoxes = new Map();
 
-    //Добавляем все параметры в мапу, то есть сезон, ширину, диаметр
-    for (const property of properties) {
-        checkedCheckBoxes.set(property, []);
-    }
+    let infoTocheck = `{${checkBoxToCheck.name}, ${checkBoxToCheck.value}, ${checkBoxToCheck.checked}}`;
 
-    //Добавляем по каждому параметру актуальные выбранные значения
+    console.log("Checking " + infoTocheck);
+
+    // //Добавляем все параметры в мапу, то есть сезон, ширину, диаметр
+    // for (const property of properties) {
+    //     checkedCheckBoxes.set(property, []);
+    // }
+
+    // //Добавляем по каждому параметру актуальные выбранные значения
+    // for (const checkBox of checkBoxArray) {
+    //     if (checkBox.checked) {
+    //         checkedCheckBoxes.get(checkBox.name).push(checkBox.value);
+    //     }
+    // }
+
     for (const checkBox of checkBoxArray) {
         if (checkBox.checked) {
-            checkedCheckBoxes.get(checkBox.name).push(checkBox.value);
+            if (!checkedCheckBoxes.has(checkBox.name)) {
+                checkedCheckBoxes.set(checkBox.name, [checkBox.value]);
+            }
+            else {
+                checkedCheckBoxes.get(checkBox.name).push(checkBox.value);
+            }
         }
     }
 
-    console.log("Checked parameters : ");
-    for (const [key, elem] of checkedCheckBoxes.entries()) {
-        console.log(key, elem);
-    }
+    // console.log("Checked parameters : ");
+    // for (const [key, elem] of checkedCheckBoxes.entries()) {
+    //     console.log(key, elem);
+    // }
 
     //Добавляем или удаляем, в зависимости от состояния чекбокса (был выбран или нет)
+
+
     if (checkBoxToCheck.checked) {
+
         let index = checkedCheckBoxes.get(checkBoxToCheck.name).indexOf(checkBoxToCheck.value);
         if (index > -1) {
             checkedCheckBoxes.get(checkBoxToCheck.name).splice(index, 1);
+            console.log("Deleting " + infoTocheck);
+
         }
+
     }
     else {
-        checkedCheckBoxes.get(checkBoxToCheck.name).push(checkBoxToCheck.value);
+
+        if (checkedCheckBoxes.has(checkBoxToCheck.name)) {
+            checkedCheckBoxes.get(checkBoxToCheck.name).push(checkBoxToCheck.value);
+        }
+        else {
+            checkedCheckBoxes.set(checkBoxToCheck.name, [checkBoxToCheck.value]);
+        }
+
+        console.log("Adding " + infoTocheck);
+
+
+
     }
 
 
-    console.log("After second update : ");
-    for (const [key, elem] of checkedCheckBoxes.entries()) {
-        console.log(key, elem);
+    for (const [key, value] of checkedCheckBoxes) {
+        if (checkedCheckBoxes.get(key).length == 0) {
+            checkedCheckBoxes.delete(key);
+        }
     }
+
+    if (checkedCheckBoxes.size == 0) {
+
+        let allCardIds = [];
+
+        for (const card of cardArray) {
+            allCardIds.push(card.dataset.id);
+        }
+
+        console.log("Map is empty, show this : ", allCardIds);
+
+        return allCardIds;
+
+    }
+
+
+
+
+
+    // console.log("After second update : ");
+    // for (const [key, elem] of checkedCheckBoxes.entries()) {
+    //     console.log(key, elem);
+    // }
 
 
 
@@ -249,12 +325,13 @@ function giveMeArray(mapWithCheckedCheckBoxes, cardArray) {
 
     }
 
+    console.log(mapWithCheckedCheckBoxes);
 
     let newCardArray = [];
 
     let mapWithCards = new Map();
 
-    for (const [parameter, values] of mapWithCheckedCheckBoxes) {
+    for (const [parameter, values] of mapWithCheckedCheckBoxes.entries()) {
         for (const card of cardArray) {
             //Если наша карточка подходит под выбранные характеристики
             if (values.includes("" + $(card).data(parameter))) {
@@ -263,13 +340,13 @@ function giveMeArray(mapWithCheckedCheckBoxes, cardArray) {
                     mapWithCards.get(card).push($(card).data(parameter));
                 }
                 else {
-                    mapWithCards.set(card, new Array($(card).data(parameter)));
+                    mapWithCards.set(card, [$(card).data(parameter)]);
                 }
-
             }
             else {
                 if (mapWithCards.has(card)) {
-                    $(card).data('match', false);
+                    // $(card).data('match', false);
+                    // console.log($(card).data('match'))
                 }
             }
 
@@ -283,7 +360,7 @@ function giveMeArray(mapWithCheckedCheckBoxes, cardArray) {
         // }
 
 
-        if (value.length == 3) {
+        if (value.length == mapWithCheckedCheckBoxes.size) {
             newCardArray.push($(key).data('id'));
         }
     }
@@ -301,7 +378,7 @@ function disableUselessCheckBoxes(cardArray, checkBoxArray, properties) {
 
 
     for (var checkBox of checkBoxArray) {
-        $(checkBox).prop('checked', false);
+        // $(checkBox).prop('checked', false);
         $(checkBox).prop('disabled', true);
     }
 
@@ -312,7 +389,7 @@ function disableUselessCheckBoxes(cardArray, checkBoxArray, properties) {
             let value = $(card).data(property);
 
             $(`input[type="checkbox"][name="${name}"][value="${value}"]`).prop('disabled', false);
-            $(`input[type="checkbox"][name="${name}"][value="${value}"]`).prop('checked', true);
+            // $(`input[type="checkbox"][name="${name}"][value="${value}"]`).prop('checked', true);
 
         }
     }
@@ -331,16 +408,16 @@ function uncheckWrongCheckBoxes(cardIdArray, cardArray, checkBoxArray, propertie
                 let name = property;
                 let value = $(card).data(property);
 
-                
+
                 console.log("disable this: ", name, value);
                 var checkBox = $(`input[type="checkbox"][name="${name}"][value="${value}"]`);
 
-                
+
                 $(checkBox).prop('checked', false);
             }
 
         }
-        
+
 
 
     }
