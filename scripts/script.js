@@ -135,7 +135,6 @@ function applyFilters(checkBoxArray, cardArray) {
     let showThis = giveMeArray(checkedCheckBoxes, cardArray);
     console.log("Show this: ", showThis);
 
-    //uncheckWrongCheckBoxes(showThis, cardArray, checkBoxArray, propertyNames);
 
 
     showCards(showThis, cardArray);
@@ -143,9 +142,6 @@ function applyFilters(checkBoxArray, cardArray) {
 
 
     for (const checkBox of checkBoxArray) {
-
-        //checkBox.value == "summer" || checkBox.value == "winter"|| checkBox.value == "R18" || checkBox.value == "225" || checkBox.value == "245"
-
         if (true) {
             var newIds = checkthisParameter(checkBox, propertyNames, checkBoxArray, cardArray);
 
@@ -162,7 +158,7 @@ function applyFilters(checkBoxArray, cardArray) {
                 //Странное поведение, не баг, а фича
 
 
-                $(checkBox).prop('checked', false);
+                // $(checkBox).prop('checked', false);
                 $(checkBox).prop('disabled', true);
             }
             else {
@@ -282,7 +278,7 @@ function giveMeArray(mapWithCheckedCheckBoxes, cardArray) {
 
     //Тут странно
     for (const [key, value] of mapWithCards.entries()) {
-        // if ($(key).data('match') === true) {
+        // if ($(key).data('match') == true) {
         //     newCardArray.push($(key).data('id'));
         // }
 
