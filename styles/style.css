@@ -91,7 +91,7 @@ header{
 
 
 
-.season{
+.top-subsection{
     display: flex;
     flex-direction: column;
     margin: 1em 1em;
@@ -99,14 +99,14 @@ header{
     border-bottom: 1px solid gray;
 }
 
-.diameter{
+.middle-subsection{
     display: flex;
     flex-direction: column;
     margin: 0.5em 1em;
     border-bottom: 1px solid gray;
 }
 
-.width{
+.bottom-subsection{
     display: flex;
     flex-direction: column;
     margin: 1em 1em;

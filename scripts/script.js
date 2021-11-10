@@ -71,7 +71,7 @@ const propertyNames = ['season', 'diameter', 'width'];
 const properties = {
     'season': ['summer', 'winter'],
     'diameter': ['R14', 'R15', 'R16', 'R17', 'R18'],
-    'width': ['175', '185', '195', '205', '225', '245']
+    'width': ['175', '185', '195', '205', '225', '245', '265']
 };
 
 
@@ -80,8 +80,10 @@ $("document").ready(function () {
 
     //Находим наш див, в котором будут карточки лежать, он заранее сверстан
     var container = document.getElementById("card-container");
+    var filter = $('.filter');
     //Вызываем скрипт, когда документ полностью загрузится
     addTires(tireArray, propertyNames, container);
+    addCheckboxes(properties, filter);
 
 
     var cardArray = document.getElementsByClassName("card");
@@ -224,18 +226,6 @@ function checkthisParameter(checkBoxToCheck, properties, checkBoxArray, cardArra
     let infoTocheck = `{${checkBoxToCheck.name}, ${checkBoxToCheck.value}, ${checkBoxToCheck.checked}}`;
 
     console.log("Checking " + infoTocheck);
-
-    // //Добавляем все параметры в мапу, то есть сезон, ширину, диаметр
-    // for (const property of properties) {
-    //     checkedCheckBoxes.set(property, []);
-    // }
-
-    // //Добавляем по каждому параметру актуальные выбранные значения
-    // for (const checkBox of checkBoxArray) {
-    //     if (checkBox.checked) {
-    //         checkedCheckBoxes.get(checkBox.name).push(checkBox.value);
-    //     }
-    // }
 
     for (const checkBox of checkBoxArray) {
         if (checkBox.checked) {
@@ -463,6 +453,59 @@ function addTires(array, properties, container) {
 
         //говорим контейнеру добавить карточку в конец
         container.append(newCard);
+    }
+}
+
+function addCheckboxes(properties, container){
+
+    
+
+    for (const property in properties) {
+        var subsection = document.createElement('div');
+
+        if(property == Object.keys(properties)[Object.keys(properties).length - 1]){
+            $(subsection).addClass('bottom-subsection');
+        }
+        else if(property == Object.keys(properties)[0]){
+            $(subsection).addClass('top-subsection');
+        }
+        else{
+            $(subsection).addClass('middle-subsection');
+        }
+
+
+        $(subsection).addClass('width');
+
+        subsection.innerText = property.charAt(0).toUpperCase() + property.slice(1);
+
+        for (const value of properties[property]) {
+            
+            var elem = document.createElement('label');
+
+            $(elem).addClass('checkbox-element');
+
+            elem.innerText = value.charAt(0).toUpperCase() + value.slice(1);
+
+            var newCheckBox = document.createElement('input');
+
+            $(newCheckBox).attr({
+                type: 'checkbox',
+                name: property,
+                value: value
+            });
+
+
+            elem.prepend(newCheckBox);
+
+
+
+            subsection.append(elem);
+
+        }
+
+
+        container.append(subsection);
+
     }
 }
 
