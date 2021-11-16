@@ -1,77 +1,76 @@
 
-const tireArray = new Array(
+
+const bookArray = new Array(
     {
         id: 0,
-        name: "Michelin Pilot Sport 4S",
-        season: "summer",
-        diameter: "R18",
-        width: "225"
+        name: "Карта Анны",
+        binding: "solid",
+        publisher: "Kid",
+        limit: "0+"
     },
     {
         id: 1,
-        name: "Yokohama BluEarth",
-        season: "summer",
-        diameter: "R15",
-        width: "205"
+        name: "Библия",
+        binding: "solid",
+        publisher: "EKSMO",
+        limit: "18+"
     },
     {
         id: 2,
-        name: "Toyo Proxes R888R",
-        season: "summer",
-        diameter: "R18",
-        width: "245"
+        name: "Декабристы. 86 портретов",
+        binding: "soft",
+        publisher: "EKSMO",
+        limit: "0+"
     },
     {
         id: 3,
-        name: "Goodyear UltraGrip",
-        season: "winter",
-        diameter: "R14",
-        width: "185"
+        name: "Елизавета Федоровна",
+        binding: "soft",
+        publisher: "EKSMO",
+        limit: "3+"
     },
     {
         id: 4,
-        name: "Goodyear UltraTop",
-        season: "winter",
-        diameter: "R14",
-        width: "205"
+        name: "Моя мама сошла с ума",
+        binding: "solid",
+        publisher: "EKSMO",
+        limit: "16+"
     },
     {
         id: 5,
-        name: "Nokian Hakka Black SUV",
-        season: "summer",
-        diameter: "R18",
-        width: "245"
+        name: "Твоими глазами",
+        binding: "solid",
+        publisher: "EKSMO",
+        limit: "16+"
     },
     {
         id: 6,
-        name: "Goodyear UltraGrip Arctic 2",
-        season: "winter",
-        diameter: "R18",
-        width: "225"
+        name: "Твоими глазами1",
+        binding: "soft",
+        publisher: "EKSMO",
+        limit: "18+"
     },
     {
         id: 7,
-        name: "Goodyear Eagle F1",
-        season: "summer",
-        diameter: "R16",
-        width: "225"
+        name: "Гарри Поттер",
+        binding: "soft",
+        publisher: "Woodpecker",
+        limit: "18+"
     },
-    {
-        id: 8,
-        name: "Nokian Hakkapelita 8",
-        season: "winter",
-        diameter: "R18",
-        width: "245"
-    }
+    // {
+    //     id: 8,
+    //     name: "Гарри Поттер",
+    //     binding: "soft",
+    //     publisher: "ROSMAN",
+    //     limit: "18+"
+    // }
 );
 
 
-const propertyNames = ['season', 'diameter', 'width'];
-
 const properties = {
-    'season': ['summer', 'winter'],
-    'diameter': ['R14', 'R15', 'R16', 'R17', 'R18'],
-    'width': ['175', '185', '195', '205', '225', '245', '265']
+    'publisher': ['EKSMO', 'Woodpecker', 'ROSMAN', 'Kid'],
+    'binding': ['soft', 'solid'],
+    'limit': ['18+', '16+', '3+', '0+']
 };
 
 
@@ -82,7 +81,7 @@ $("document").ready(function () {
     var container = document.getElementById("card-container");
     var filter = $('.filter');
     //Вызываем скрипт, когда документ полностью загрузится
-    addTires(tireArray, propertyNames, container);
+    addBooks(bookArray, Object.keys(properties), container);
     addCheckboxes(properties, filter);
 
 
@@ -95,8 +94,7 @@ $("document").ready(function () {
     }
 
     $('div[class="clear-filter"]').click(function () {
-        disableUselessCheckBoxes(cardArray, checkBoxArray, propertyNames);
-        //applyFilters(checkBoxArray, cardArray);
+        disableUselessCheckBoxes(cardArray, checkBoxArray, Object.keys(properties));
 
         for (var checkBox of checkBoxArray) {
             $(checkBox).prop('checked', false);
@@ -107,7 +105,7 @@ $("document").ready(function () {
 
     });
 
-    disableUselessCheckBoxes(cardArray, checkBoxArray, propertyNames);
+    disableUselessCheckBoxes(cardArray, checkBoxArray, Object.keys(properties));
 
     applyFilters(checkBoxArray, cardArray);
 
@@ -116,9 +114,6 @@ $("document").ready(function () {
             applyFilters(checkBoxArray, cardArray);
         });
     }
-
-
-
 });
 
 
@@ -128,7 +123,7 @@ function applyFilters(checkBoxArray, cardArray) {
     let checkedCheckBoxes = new Map();
 
     //Добавляем все параметры в мапу, то есть сезон, ширину, диаметр
-    // for (const property of propertyNames) {
+    // for (const property of Object.keys(properies)) {
     //     checkedCheckBoxes.set(property, []);
     // }
 
@@ -159,8 +154,9 @@ function applyFilters(checkBoxArray, cardArray) {
         console.log("Show this: ", showThis);
 
         for (const checkBox of checkBoxArray) {
+            //возможность проверки отдельного чекбокса в условии if(checkBox.value=='ваше значение')
             if (true) {
-                var newIds = checkthisParameter(checkBox, propertyNames, checkBoxArray, cardArray);
+                var newIds = checkthisParameter(checkBox, Object.keys(properties), checkBoxArray, cardArray);
                 console.log(`Cards to show with {${checkBox.name}, ${checkBox.value}} : `, newIds);
 
                 if (newIds.length == 0) {
@@ -169,12 +165,6 @@ function applyFilters(checkBoxArray, cardArray) {
                 }
                 else if (compare(showThis, newIds)) {
                     console.log("Nothing changes");
-
-
-                    //Странное поведение, не баг, а фича
-
-
-                    // $(checkBox).prop('checked', false);
                     $(checkBox).prop('disabled', true);
                 }
                 else {
@@ -182,16 +172,12 @@ function applyFilters(checkBoxArray, cardArray) {
                     $(checkBox).prop('disabled', false);
 
                 }
-
             }
-
-
-
         }
     }
     else {
 
-        disableUselessCheckBoxes(cardArray, checkBoxArray, propertyNames);
+        disableUselessCheckBoxes(cardArray, checkBoxArray, Object.keys(properties));
 
         for (const card of cardArray) {
             showThis.push($(card).data('id'));
@@ -202,6 +188,7 @@ function applyFilters(checkBoxArray, cardArray) {
 }
 
 
+// Принимаем массив идентификаторов карточек и массив карточек
 function showCards(cardIdArray, cardArray) {
 
     for (const card of cardArray) {
@@ -252,9 +239,7 @@ function checkthisParameter(checkBoxToCheck, properties, checkBoxArray, cardArra
         if (index > -1) {
             checkedCheckBoxes.get(checkBoxToCheck.name).splice(index, 1);
             console.log("Deleting " + infoTocheck);
-
         }
-
     }
     else {
 
@@ -266,11 +251,7 @@ function checkthisParameter(checkBoxToCheck, properties, checkBoxArray, cardArra
         }
 
         console.log("Adding " + infoTocheck);
-
-
-
     }
-
 
     for (const [key, value] of checkedCheckBoxes) {
         if (checkedCheckBoxes.get(key).length == 0) {
@@ -289,19 +270,7 @@ function checkthisParameter(checkBoxToCheck, properties, checkBoxArray, cardArra
         console.log("Map is empty, show this : ", allCardIds);
 
         return allCardIds;
-
     }
-
-
-
-
-
-    // console.log("After second update : ");
-    // for (const [key, elem] of checkedCheckBoxes.entries()) {
-    //     console.log(key, elem);
-    // }
-
-
 
     return giveMeArray(checkedCheckBoxes, cardArray);
 }
@@ -310,15 +279,9 @@ function checkthisParameter(checkBoxToCheck, properties, checkBoxArray, cardArra
 //Выдает массив идентификаторов тех карточек, которые подходят под набор чекбоксов
 function giveMeArray(mapWithCheckedCheckBoxes, cardArray) {
 
-    for (const card of cardArray) {
-        $(card).data('match', true);
-
-    }
-
-    console.log(mapWithCheckedCheckBoxes);
+    // console.log(mapWithCheckedCheckBoxes);
 
     let newCardArray = [];
-
     let mapWithCards = new Map();
 
     for (const [parameter, values] of mapWithCheckedCheckBoxes.entries()) {
@@ -333,23 +296,10 @@ function giveMeArray(mapWithCheckedCheckBoxes, cardArray) {
                     mapWithCards.set(card, [$(card).data(parameter)]);
                 }
             }
-            else {
-                if (mapWithCards.has(card)) {
-                    // $(card).data('match', false);
-                    // console.log($(card).data('match'))
-                }
-            }
-
         }
     }
 
-    //Тут странно
     for (const [key, value] of mapWithCards.entries()) {
-        // if ($(key).data('match') == true) {
-        //     newCardArray.push($(key).data('id'));
-        // }
-
-
         if (value.length == mapWithCheckedCheckBoxes.size) {
             newCardArray.push($(key).data('id'));
         }
@@ -417,74 +367,69 @@ function uncheckWrongCheckBoxes(cardIdArray, cardArray, checkBoxArray, propertie
 
 
 //контейнер - тот див, куда вставляются карточки
-function addTires(array, properties, container) {
+function addBooks(array, properties, container) {
 
     //Массив с данными
     for (const key in array) {
-        var tire = array[key];
+        var book = array[key];
         //создание элемента 
         var newCard = document.createElement("div");
 
+        //html, который будет соответствовать этой карточке
+        //Обрати внимание на кавычки у строки, они находятся на букве Ё 
+        let cardHtml =
+            `<h1 class="book-name">${book.name}</h1>`;
 
         //Добавление класса со стилями, который описывает внешний вид карточки
         newCard.className = "card";
 
         //здесь создаются и устанавливаются data-аттрибуты, заполняются данными из массива с карточками
-        newCard.dataset.id = tire.id;
-        newCard.dataset.name = tire.name;
+        newCard.dataset.id = book.id;
+        newCard.dataset.name = book.name;
 
         for (const property of properties) {
-            $(newCard).attr('data-' + property, tire[property]);
+            $(newCard).attr('data-' + property, book[property]);
+            cardHtml += `<p>${book[property]}</p>`;
         }
-        newCard.dataset.match = true;
-
-
-        //html, который будет соответствовать этой карточке
-        //Обрати внимание на кавычки у строки, они находятся на букве Ё 
-        let a =
-            `<h1 class="tire-name">${tire.id}</h1>
-        <p class="tire-season">${tire.season}</p>
-        <p class="tire-diameter">${tire.diameter}</p>
-        <p class="tire-width">${tire.width}</p>`;
-
-        //Это обязательно, иначе он не понимает такую строку
+        
         //Мы вставляем заготовленный html в карточку
-        newCard.innerHTML = "" + a;
+        newCard.innerHTML = cardHtml;
 
         //говорим контейнеру добавить карточку в конец
         container.append(newCard);
     }
 }
 
-function addCheckboxes(properties, container){
-
-    
+function addCheckboxes(properties, container) {
 
     for (const property in properties) {
         var subsection = document.createElement('div');
 
-        if(property == Object.keys(properties)[Object.keys(properties).length - 1]){
-            $(subsection).addClass('bottom-subsection');
-        }
-        else if(property == Object.keys(properties)[0]){
-            $(subsection).addClass('top-subsection');
-        }
-        else{
-            $(subsection).addClass('middle-subsection');
-        }
+        $(subsection).addClass('subsection');
+
+        //Установка правильных стилей для 
+        // if (property == Object.keys(properties)[Object.keys(properties).length - 1]) {
+        //     $(subsection).addClass('bottom-subsection');
+        // }
+        // else if (property == Object.keys(properties)[0]) {
+        //     $(subsection).addClass('top-subsection');
+        // }
+        // else {
+        //     $(subsection).addClass('middle-subsection');
+        // }
 
 
         $(subsection).addClass('width');
 
         subsection.innerText = property.charAt(0).toUpperCase() + property.slice(1);
 
+        //Создание лейбла и чекбокса в нем
         for (const value of properties[property]) {
-            
-            var elem = document.createElement('label');
 
-            $(elem).addClass('checkbox-element');
+            var newLabel = document.createElement('label');
 
-            elem.innerText = value.charAt(0).toUpperCase() + value.slice(1);
+            $(newLabel).addClass('checkbox-element');
+            newLabel.innerText = value.charAt(0).toUpperCase() + value.slice(1);
 
             var newCheckBox = document.createElement('input');
 
@@ -495,11 +440,11 @@ function addCheckboxes(properties, container){
             });
 
 
-            elem.prepend(newCheckBox);
+            // Вставка чекбокса перед текстом лейбла
+            newLabel.prepend(newCheckBox);
 
-
-
-            subsection.append(elem);
+            // Вставка лейбла 
+            subsection.append(newLabel);
 
         }
 

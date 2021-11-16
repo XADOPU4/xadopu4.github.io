@@ -36,29 +36,31 @@ header{
 
 .container{
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     padding-top: 100px;
     min-height: 500px;
 }
 
 .filter{
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 20%;
+    flex-direction: row;
+    justify-content: space-evenly;
+    min-width: 80%;
     height: fit-content;
     border: 1px solid rgba(141, 141, 141, 0.6);
-    border-radius: 2em;
+    border-radius: 1em;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     margin: 1em 1em;
-    padding: 0.5em 0;
+    padding: 1em 1em;
 }
 
 .clear-filter{
-    width: 90%;
-    margin: 0.5em auto;
-    height: 4em;
-    background-color: sandybrown;
+    width: 200px;
+    margin: 0.5em;
+    height: 100px;
+    background-color: rgb(150, 244, 96);
     border-radius: 1em;
     display: flex;
     justify-content: center;
@@ -88,22 +90,28 @@ header{
     border: none;
 }
 
-
-
+.subsection{
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    /* justify-content: center; */
+    padding: 1em 1em;
+    border-left: 1px solid gray;
+}
 
 .top-subsection{
     display: flex;
     flex-direction: column;
     margin: 1em 1em;
     margin-bottom: 0.5em;
-    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
 }
 
 .middle-subsection{
     display: flex;
     flex-direction: column;
     margin: 0.5em 1em;
-    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
 }
 
 .bottom-subsection{
@@ -111,6 +119,7 @@ header{
     flex-direction: column;
     margin: 1em 1em;
     margin-top: 0.5em;
+    border-left: 1px solid gray;
 }
 
 .card{
@@ -120,13 +129,25 @@ header{
     justify-content: space-between;
 
     width: 20%;
-    height: 14em;
-    border: 1px solid rgba(141, 141, 141, 0.6);
-    background-color: rgb(212, 212, 212);
+    height: fit-content;
+    border: 1px solid rgba(255, 0, 0, 0.6);
+    /* background-color: rgba(255, 103, 103, 0.438); */
+    background-color: rgba(205, 129, 255, 0.438);
+
     padding: 1em;
     margin: 1em 1em;
-    border-radius: 2em;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    border-radius: 1em;
+    border-style: outset;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.23);
+    transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+
+
+}
+
+.card:hover{
+    box-shadow: 0 20px 40px rgba(255, 48, 48, 0.19), 0 10px 20px rgba(255, 95, 95, 0.23);
+    border-color: rgb(0, 195, 255);
+
 }
 
 .hide{
@@ -145,8 +166,8 @@ header{
     background-color: #ff00005b;
 }
 
-.tire-name{
-    font-size: 24px;
+.book-name{
+    font-size: 2em;
     text-align: center;
 }
 
