@@ -442,7 +442,7 @@ function addTires(array, properties, container) {
         //html, который будет соответствовать этой карточке
         //Обрати внимание на кавычки у строки, они находятся на букве Ё 
         let a =
-            `<h1 class="tire-name">${tire.id}</h1>
+            `<h1 class="tire-name">${tire.name}</h1>
         <p class="tire-season">${tire.season}</p>
         <p class="tire-diameter">${tire.diameter}</p>
         <p class="tire-width">${tire.width}</p>`;
